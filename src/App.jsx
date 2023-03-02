@@ -11,21 +11,3 @@ function App() {
 
 export default App
 
-
-function TodoList() {
-  return(
-    <div>
-      <Todo/>
-    </div>
-  )
-}
-
-
-
-function Todo() {
-  return(
-    <div>
-
-    </div>
-  )
-}
