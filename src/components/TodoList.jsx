@@ -1,3 +1,5 @@
+import Todo from './Todo.jsx'; 
+
 function TodoList() {
     return(
       <div>
@@ -5,3 +7,5 @@ function TodoList() {
       </div>
     )
   }
+
+  export default TodoList
