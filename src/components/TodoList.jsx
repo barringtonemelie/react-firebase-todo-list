@@ -15,7 +15,6 @@ function TodoList() {
 
     const handleSubmit = (event) => {
         event.preventDefault(); 
-        // Lägg till todo, både i UI och DB
         console.log("Värdet som kommer läggas till: " + input); 
         addTodo(); 
         setInput(""); 
@@ -63,16 +62,11 @@ function TodoList() {
     }
     
     useEffect(() => {
-        console.log("Use effect körs"); 
-
         fetchFromDB().then((newTodo) => {
             setTodos(newTodo);
         }); 
 
     }, [todos.length])
-
-    console.log("TODOS:", todos); 
-
     
 
     return(
@@ -90,10 +84,10 @@ function TodoList() {
                 key={item.id}
                 id={item.id}
                 desc={item.desc}
+                completed={item.completed}
                 editTodo={editTodo}
                 deleteTodo={deleteTodo}
                 toggleCompleted={toggleCompleted}
-                completed={item.completed}
                 />
                 )
             })} 
