@@ -7,35 +7,34 @@ function Todo(props) {
     const [isEditing, setIsEditing] = useState(false); 
 
     const handleSubmit = (event) => {
+      console.log("Form edited, with ID: " + props.id + "and value: " + input); 
       event.preventDefault(); 
+      props.editTodo(props.id, input); 
       setInput(""); 
+      setIsEditing(false); 
     }
 
     const handleChange = (event) => {
       setInput(event.target.value); 
     }
 
-    return(
+    const defaultTemplate = (
       <div>
-
-        <li className={styles.listItem} key={props.id} id={props.id}>
-
-        {/* Default template */}
+        <div className={styles.checkbox}>
+          <input
+          type="checkbox"
+          />
+          {props.desc}
+        </div>
         <div>
-            <div className={styles.checkbox}>
-              <input
-              type="checkbox"
-              />
-              {props.desc}
-            </div>
-            <div>
-              <button className={styles.button} type="button" onClick={() => setIsEditing(true)}>Edit</button>
-              <button className={styles.button} type="button" onClick={() => props.deleteTodo(props.id)}>Delete</button>
-            </div>
-          </div>
+          <button className={styles.button} type="button" onClick={() => setIsEditing(true)}>Edit</button>
+          <button className={styles.button} type="button" onClick={() => props.deleteTodo(props.id)}>Delete</button>
+        </div>
+    </div>
+    ); 
 
-          {/* Edit template */}
-          <form onSubmit={handleSubmit}>
+    const editTemplate = (
+      <form onSubmit={handleSubmit}>
             <label>New name for todo: {props.desc}</label>
             <input 
               type="text" 
@@ -43,13 +42,16 @@ function Todo(props) {
               onChange={handleChange} 
               value={input} />
             <div>
-              <button className={styles.button} type="button">Cancel</button>
-              <button className={styles.button} type="button">Save</button>
+              <button className={styles.button} type="button" onClick={() => setIsEditing(false)}>Cancel</button>
+              <button className={styles.button} type="submit" >Save</button>
             </div>
           </form>
-        </li>
-        
-      </div>
+    )
+
+    return(
+      <li className={styles.listItem} key={props.id} id={props.id}>
+          {isEditing ? editTemplate : defaultTemplate}
+      </li>
     )
   }
 

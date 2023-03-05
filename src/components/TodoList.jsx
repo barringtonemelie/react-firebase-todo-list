@@ -30,8 +30,14 @@ function TodoList() {
     }
 
     const editTodo = (id, newDesc) => {
-        //Update 
-        //Iterera igenom och editera den som stämmer mot IDt 
+        const editedList = todos.map(item => {
+            if(id === item.id) {
+                updateTodosDB(id, {...item, desc: newDesc}); 
+                return {...item, desc: newDesc}; 
+            }
+            return item; 
+        });
+        setTodos(editedList); 
     }
 
     const deleteTodo = (id) => {
@@ -48,7 +54,7 @@ function TodoList() {
         console.log("Use effect körs"); 
 
         fetchFromDB().then((newTodo) => {
-            setTodos(newTodo)
+            setTodos(newTodo);
         }); 
 
     }, [todos.length])
@@ -74,7 +80,6 @@ function TodoList() {
                 deleteTodo={deleteTodo}
                 />
                 )
-                
             })} 
         </ul>
         <Todo/>
