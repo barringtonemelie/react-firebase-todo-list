@@ -1,5 +1,6 @@
 import Todo from './Todo.jsx'; 
-import React, {useState, useEffect} from "react"; 
+import React, {useState, useEffect} from "react";
+import styles from '../App.module.css';
 import { addTodosDB, fetchFromDB, updateTodosDB, deleteTodoDB } from "../db/operations.js"
 
 function TodoList() {
@@ -27,6 +28,21 @@ function TodoList() {
         addTodosDB(newTodo); 
         setTodos([...todos, newTodo]); 
     }
+
+    const editTodo = (id, newDesc) => {
+        //Update 
+        //Iterera igenom och editera den som stämmer mot IDt 
+    }
+
+    const deleteTodo = (id) => {
+        const remainingTodos = todos.filter(item => {
+            return id !== item.id; 
+        });
+        deleteTodoDB(id); 
+        setTodos(remainingTodos); 
+    }
+
+    
     
     useEffect(() => {
         console.log("Use effect körs"); 
@@ -35,20 +51,31 @@ function TodoList() {
             setTodos(newTodo)
         }); 
 
-    }, [])
+    }, [todos.length])
 
     console.log(todos); 
 
     return(
-      <div>
-        <h1>My Todo List</h1>
+      <div className={styles.wrapper}>
+        <h1 className={styles.header}>My Todo List</h1>
         <form onSubmit={handleSubmit}>
-            <label htmlFor="todoInput">Add a todo: </label>
-            <input type="text" id="todoInput" onChange={handleChange} value={input}/>
-            <button type="submit" >Add todo</button>
+            <label htmlFor="todoInput" className={styles.font}>Add a todo: </label>
+            <input type="text" id="todoInput" onChange={handleChange} value={input} className={styles.input}/>
+            <button type="submit" className={styles.button}>Add todo</button>
         </form>
-        <ul>
-            
+        <ul className={styles.list}>
+            {todos.map((item) => {
+                return (
+                <Todo
+                key={item.id}
+                id={item.id}
+                desc={item.desc}
+                editTodo={editTodo}
+                deleteTodo={deleteTodo}
+                />
+                )
+                
+            })} 
         </ul>
         <Todo/>
       </div>
