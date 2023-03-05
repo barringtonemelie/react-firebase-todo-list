@@ -7,6 +7,7 @@ function TodoList() {
 
     const [input, setInput] = useState(""); 
     const [todos, setTodos] = useState([]); 
+    const [toggled, setToggled] = useState(false); 
 
     const handleChange = (event) => { 
         setInput(event.target.value); 
@@ -40,6 +41,19 @@ function TodoList() {
         setTodos(editedList); 
     }
 
+    const toggleCompleted = (id) => {
+        toggled ? setToggled(false) : setToggled(true); 
+
+        const editedList = todos.map(item => {
+            if(id === item.id) {
+                updateTodosDB(id, {...item, completed: !item.completed}); 
+                return {...item, completed: !item.completed}; 
+            }
+            return item; 
+        });
+        setTodos(editedList); 
+    }
+
     const deleteTodo = (id) => {
         const remainingTodos = todos.filter(item => {
             return id !== item.id; 
@@ -47,8 +61,6 @@ function TodoList() {
         deleteTodoDB(id); 
         setTodos(remainingTodos); 
     }
-
-    
     
     useEffect(() => {
         console.log("Use effect körs"); 
@@ -59,7 +71,9 @@ function TodoList() {
 
     }, [todos.length])
 
-    console.log(todos); 
+    console.log("TODOS:", todos); 
+
+    
 
     return(
       <div className={styles.wrapper}>
@@ -78,11 +92,12 @@ function TodoList() {
                 desc={item.desc}
                 editTodo={editTodo}
                 deleteTodo={deleteTodo}
+                toggleCompleted={toggleCompleted}
+                completed={item.completed}
                 />
                 )
             })} 
         </ul>
-        <Todo/>
       </div>
     )
   }
